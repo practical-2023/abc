@@ -1,0 +1,110 @@
+//SADP-Adapter Pattern Enumeration
+
+//Write a Java Program to implement Adapter pattern for Enumeration iterator
+
+import java.util.*;
+class EnumerationIterator implements Iterator {
+Enumeration enumeration;
+public EnumerationIterator(Enumeration enumeration) {
+this.enumeration = enumeration;
+}
+public boolean hasNext() {
+return enumeration.hasMoreElements();
+}
+public Object next() {
+return enumeration.nextElement();
+}
+
+public void remove() {
+throw new UnsupportedOperationException();
+}
+}
+public class Main {
+public static void main (String args[]) {
+Vector v = new Vector(Arrays.asList(args));
+Iterator iterator = new EnumerationIterator(v.elements());
+while (iterator.hasNext()) {
+System.out.println(iterator.next());
+}
+}
+}
+
+
+
+//ML- # implementation of multiple regression on given dataset
+#there are multiple independent variable sLinear regreesion
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+ds=pd.read_csv('Startups.csv')
+print(ds,'\n')
+
+x=ds.iloc[:, :-1].values  
+print('Dependent column: ','\n',x)
+y=ds.iloc[:, 4].values
+print('Independent column:','\n',y)
+
+#Label Encoding
+from sklearn.preprocessing import LabelEncoder,OneHotEncoder
+from sklearn.compose import ColumnTransformer
+labelencoder_x=LabelEncoder()
+x[:,3]=labelencoder_x.fit_transform(x[:,3])
+ct=ColumnTransformer([("Countries",OneHotEncoder(),[3])],remainder='passthrough')
+x=ct.fit_transform(x)
+print(x)
+               
+#avoiding the dummy variable trap:  
+x = x[:, 1:]  
+print('New',x)
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=0)
+
+#Fitting the MLR model to the training set: 
+from sklearn.linear_model import LinearRegression
+regressor=LinearRegression()
+regressor.fit(x_train,y_train)
+    
+
+#predicting the Test set result
+y_pred=regressor.predict(x_test)
+print(y_pred)
+
+print('Train Score: ', regressor.score(x_train, y_train))  
+print('Test Score: ', regressor.score(x_test, y_test))   
+
+
+
+//Web framework-Using nodejs create a web page to read two file names from user and append contents
+of first file into second file
+
+var fs = require('fs'); 
+var file1 ='input.txt'; 
+var file2 = 'output.txt'; 
+ 
+function fileValidation() 
+{     
+fs.open(file1,'r',function(err,fd)
+{  if(err)             
+    {  
+        return console.error(err); 
+    }            
+       var buffer = new Buffer.alloc(30);             
+       fs.read(fd,buffer,0,buffer.length,0,function(err,bytes)
+       {                
+           if(err) throw err;                 
+           console.log(buffer.toString()); 
+       });       
+          fs.appendFile(file2,buffer,function(err)
+          {         
+             if(err) throw err;         
+             console.log("data saved !!!");        
+             fs.close(fd,function(err) 
+             {            
+               if(err) throw err;}); 
+             });      
+         }); 
+}  
+fileValidation(); 
+ 
