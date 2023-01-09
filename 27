@@ -1,0 +1,130 @@
+Write a Java Program to implement Abstract Factory Pattern for Shape interface 
+interface Shape 
+{ 
+void draw(); 
+} 
+class RoundedRectangle implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside RR"); 
+ } 
+} 
+class RoundedSquare implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside RS"); 
+ } 
+} 
+class Rectangle implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside Simple R"); 
+ } 
+} 
+class Square implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside Simple Sq"); 
+ } 
+} 
+abstract class AbstractFactory 
+{ 
+ abstract Shape getShape( String st); 
+} 
+class ShapeFactory extends AbstractFactory 
+{ 
+ public Shape getShape( String st) 
+ { 
+ if(st.equalsIgnoreCase("Rectangle")) 
+ { return new Rectangle();} 
+ else if(st.equalsIgnoreCase("Square")) 
+ { return new Square();} 
+ return null; 
+ } 
+} 
+class RoundedShapeFactory extends AbstractFactory 
+{ 
+ public Shape getShape( String st) 
+ { 
+ if(st.equalsIgnoreCase("Rectangle")) 
+ { return new RoundedRectangle();} 
+ else if(st.equalsIgnoreCase("Square")) 
+ { return new RoundedSquare();} 
+ return null; 
+ } 
+} 
+class FactoryProducer 
+{ 
+ public static AbstractFactory getFactory(boolean rounded) 
+ { 
+ if (rounded) 
+ { return new RoundedShapeFactory();} 
+ else 
+ { return new ShapeFactory();} 
+ } 
+} 
+public class Main 
+{ 
+ public static void main(String[]args) 
+ { 
+ AbstractFactory shapeFactory=FactoryProducer.getFactory(false); 
+ Shape shape1=shapeFactory.getShape("Rectangle"); 
+ shape1.draw(); 
+ Shape shape2=shapeFactory.getShape("SQuare"); 
+ shape2.draw(); 
+ 
+ AbstractFactory shapeFactory1=FactoryProducer.getFactory(true); 
+ Shape shape3=shapeFactory1.getShape("REctangle"); 
+ shape3.draw(); 
+ 
+ Shape shape4=shapeFactory1.getShape("square"); 
+ shape4.draw(); 
+ } 
+} 
+Machine Learning
+multiple regression 
+#there are multiple independent variable sLinear regreesion
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+ds=pd.read_csv('Startups.csv')
+print(ds,'\n')
+
+x=ds.iloc[:, :-1].values  
+print('Dependent column: ','\n',x)
+y=ds.iloc[:, 4].values
+print('Independent column:','\n',y)
+
+#Label Encoding
+from sklearn.preprocessing import LabelEncoder,OneHotEncoder
+from sklearn.compose import ColumnTransformer
+labelencoder_x=LabelEncoder()
+x[:,3]=labelencoder_x.fit_transform(x[:,3])
+ct=ColumnTransformer([("Countries",OneHotEncoder(),[3])],remainder='passthrough')
+x=ct.fit_transform(x)
+print(x)
+               
+#avoiding the dummy variable trap:  
+x = x[:, 1:]  
+print('New',x)
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=0)
+
+#Fitting the MLR model to the training set: 
+from sklearn.linear_model import LinearRegression
+regressor=LinearRegression()
+regressor.fit(x_train,y_train)
+    
+
+#predicting the Test set result
+y_pred=regressor.predict(x_test)
+print(y_pred)
+
+print('Train Score: ', regressor.score(x_train, y_train))  
+print('Test Score: ', regressor.score(x_test, y_test))   
