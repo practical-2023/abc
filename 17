@@ -1,0 +1,172 @@
+<<                      Java                >>
+
+interface Shape 
+{ 
+void draw(); 
+} 
+P. E. Society’s 
+Modern College of Arts, Science and Commerce, Ganeshkhind, Pune 16 
+Class: MSc(Computer Science) Sem III 
+Subject: Design Patterns 
+Collection of Programmes by Dr. Dipali Meher 
+#DipaliMeher
+class RoundedRectangle implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside RR"); 
+ } 
+} 
+class RoundedSquare implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside RS"); 
+ } 
+} 
+class Rectangle implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside Simple R"); 
+ } 
+} 
+class Square implements Shape 
+{ 
+ public void draw() 
+ { 
+ System.out.println(" Inside Simple Sq"); 
+ } 
+} 
+abstract class AbstractFactory 
+{ 
+ abstract Shape getShape( String st); 
+} 
+class ShapeFactory extends AbstractFactory 
+{ 
+ public Shape getShape( String st) 
+ { 
+ if(st.equalsIgnoreCase("Rectangle")) 
+ { return new Rectangle();} 
+ else if(st.equalsIgnoreCase("Square")) 
+ { return new Square();} 
+ return null; 
+ } 
+} 
+class RoundedShapeFactory extends AbstractFactory 
+{ 
+ public Shape getShape( String st) 
+P. E. Society’s 
+Modern College of Arts, Science and Commerce, Ganeshkhind, Pune 16 
+Class: MSc(Computer Science) Sem III 
+Subject: Design Patterns 
+Collection of Programmes by Dr. Dipali Meher 
+#DipaliMeher
+ { 
+ if(st.equalsIgnoreCase("Rectangle")) 
+ { return new RoundedRectangle();} 
+ else if(st.equalsIgnoreCase("Square")) 
+ { return new RoundedSquare();} 
+ return null; 
+ } 
+} 
+class FactoryProducer 
+{ 
+ public static AbstractFactory getFactory(boolean rounded) 
+ { 
+ if (rounded) 
+ { return new RoundedShapeFactory();} 
+ else 
+ { return new ShapeFactory();} 
+ } 
+} 
+public class Main 
+{ 
+ public static void main(String[]args) 
+ { 
+ AbstractFactory shapeFactory=FactoryProducer.getFactory(false); 
+ Shape shape1=shapeFactory.getShape("Rectangle"); 
+ shape1.draw(); 
+ Shape shape2=shapeFactory.getShape("SQuare"); 
+ shape2.draw(); 
+ 
+ AbstractFactory shapeFactory1=FactoryProducer.getFactory(true); 
+ Shape shape3=shapeFactory1.getShape("REctangle"); 
+ shape3.draw(); 
+ 
+ Shape shape4=shapeFactory1.getShape("square"); 
+ shape4.draw(); 
+ } 
+} 
+
+
+<<                        ML                           >>
+
+# Implement Linear Regression for Predicting House Prices 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+ds=pd.read_csv('dataLR.csv')
+print(ds)
+
+x=ds.iloc[:,:-1].values
+y=ds.iloc[:,1:].values
+print(x)
+print('\n',y)
+
+from sklearn.model_selection import train_test_split
+x_train,y_train,x_test,y_test=train_test_split(x,y,test_size=0.5,random_state=0)
+print(x_train)
+print(len(x_train))
+print(x_test)
+print(len(x_test))
+print(y_train)
+print(len(y_train))
+print(y_test)
+print(len(x_test))
+
+from sklearn.linear_model import LinearRegression  
+regressor= LinearRegression()  
+regressor.fit(x_train,y_train)  
+
+x_pred=regressor.predict(x_train)
+y_pred=regressor.predict(x_test)
+
+plt.scatter(x_train,y_train,c='blue')
+plt.plot(x_train,x_pred,c='orange')
+plt.title('House Prices')
+plt.xlabel('Area of Houses')
+plt.ylabel('prices(in Rupees)')
+plt.show()
+
+new_price=regressor.predict([[1500]])
+print('New price of house predicted is::',new_price)
+
+from sklearn.metrics import mean_squared_error
+error=mean_squared_error(y_test,y_pred)
+print('The house price of preicted and actual is::',error)
+
+ds1=pd.read_csv('prdata.csv')
+print(ds1)
+regressor.predict(ds1)
+p=regressor.predict(ds1)
+ds1['prices']=p
+ds1.to_csv('NewPredicted.csv')
+print(ds1)
+
+<<                           WebFrameWork                       >>
+
+var express = require('express'); 
+var app = express(); 
+var PORT = 3000; 
+window = {}; 
+app.get('/', function(req, res){ 
+    res.download('Hello.txt'); 
+});    
+app.listen(PORT, function(err){
+    if (err){ 
+        console.log(err);
+    }     
+console.log("Server listening on PORT", PORT); 
+}); 
