@@ -1,0 +1,164 @@
+//SADP-Remote Control
+
+interface Command {
+public void execute();
+}
+class Light {
+public void on(){
+System.out.println("Light is on");
+}
+public void off()
+{
+System.out.println("Light is off");
+}
+}
+class LightOnCommand implements Command {
+Light l1;
+public LightOnCommand(Light a) {
+this.l1 = a;
+}
+public void execute() {
+l1.on();
+}
+}
+class LightOffCommand implements Command {
+Light l1;
+public LightOffCommand(Light a) {
+this.l1 = a;
+}
+public void execute() {
+l1.off();
+}
+}
+class SimpleRemoteControl {
+Command slot;
+public SimpleRemoteControl() {}
+public void setCommand(Command command) {
+slot = command;
+}
+public void buttonWasPressed() {
+slot.execute();
+}
+}
+public class Main {
+public static void main(String[] args) {
+SimpleRemoteControl r1 = new SimpleRemoteControl();
+Light l1 = new Light();
+LightOnCommand lo = new LightOnCommand(l1);
+r1.setCommand(lo);
+r1.buttonWasPressed();
+LightOffCommand lO = new LightOffCommand(l1);
+r1.setCommand(lO);
+r1.buttonWasPressed();
+}
+}
+
+
+//ML-Polynomial LinearRegression
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+ds=pd.read_csv('Position_Salaries.csv')  
+print(ds)
+
+x=ds.iloc[:,1:2].values
+print('Dependent column:: ',x)
+y=ds.iloc[:,2:3].values
+print('Independent Column:: ',y)
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=0)
+print(x_train,len(x_train))
+print(x,'\n',y)
+
+
+from sklearn.linear_model import LinearRegression  
+regressor=LinearRegression()
+regressor.fit(x_train, y_train)
+
+
+#Fitting the Polynomial regression to the dataset  
+from sklearn.preprocessing import PolynomialFeatures
+poly_regs=PolynomialFeatures(degree=4)
+
+#set data
+x_poly=poly_regs.fit_transform(x_train)
+x_poly1=poly_regs.fit_transform(x_test)
+
+#for polynomial important
+regressor1=LinearRegression()
+regressor1.fit(x_poly,y_train)
+regressor1.fit(x_poly1,y_test)
+
+print('Simple Linear Train Score: ', regressor.score(x_train, y_train))  
+print('Simple Linear Test Score: ', regressor.score(x_test, y_test))
+
+#Visulaizing the result for Linear Regression model  
+plt.scatter(x_train, y_train, c='b')
+plt.plot(x_train, regressor.predict(x_train))
+plt.title('Bluff datection Model(Linear Regression Model)')
+plt.xlabel('Position Levels')
+plt.ylabel('Salary')
+#plt.show()
+
+print('Polynomial Regression Train Score: ', regressor1.score(x_poly, y_train))  
+print('Polynomial Regression Test Score: ', regressor1.score(x_poly1, y_test))  
+
+lin_pred=regressor.predict([[5]])
+print(lin_pred)
+
+poly_pred = regressor1.predict(poly_regs.fit_transform([[6.5]]))  
+print(poly_pred)
+print(poly_pred)  
+
+
+//Web framework-Create a Node.js file that opens the requested file and returns the context to the client. 
+                If anything goes wrong, throw 404 error.
+ 
+   var http = require('http'); 
+   var url = require('url'); 
+   var fs = require('fs'); 
+   http.createServer(function (req, res) 
+   {     
+     var pathname = url.parse(req.url, true).pathname;
+     console.log("Request for" + pathname + "received.");
+     fs.readFile(pathname.substr(1), function (err, data) 
+     {         
+         if (err) 
+         {           
+           console.log(err); 
+            res.writeHead(404, 
+            { 
+             'content-type': 'text/html' 
+            }); 
+              res.end('<html><body><h1>404 Not found</h1></body></html>');  
+     }        
+         else 
+         {   
+          res.writeHead(200,
+          {
+           'content-type': 'text/html' 
+          });
+              res.write(data); 
+              res.end(); 
+         } 
+    }); 
+ 
+}).listen(9030); 
+   console.log('server is running on port 8080'); 
+
+//index.html
+
+ <!DOCTYPE html> 
+ 
+<html> 
+<head> 
+    <meta charset="utf-8" /> 
+    <title>Sample Page</title> 
+</head> 
+<body> 
+Hello World! Welcome to web module. 
+</body> 
+</html> 
