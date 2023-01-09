@@ -1,0 +1,83 @@
+<                                Java                           >
+import java.io.*; 
+import java.util.*; 
+ class LowerCaseInputStream extends FilterInputStream 
+ { 
+ public LowerCaseInputStream(InputStream in) { 
+ super(in); 
+ } 
+ public int read() throws IOException { 
+ int c = super.read(); 
+ return (c == -1 ? c : Character.toLowerCase((char)c)); 
+ } 
+ public int read(byte[] b, int offset, int len) throws IOException { 
+ int result = super.read(b, offset, len); 
+ for (int i = offset; i < offset+result; i++) { 
+ b[i] = (byte)Character.toLowerCase((char)b[i]); 
+ } 
+ return result; 
+ } 
+} 
+public class Main { 
+ public static void main(String[] args) throws IOException { 
+ int c; 
+ try { 
+ InputStream in = 
+ new LowerCaseInputStream( 
+ new BufferedInputStream( 
+ new FileInputStream("test.txt"))); 
+ while((c = in.read()) >= 0) { 
+ System.out.print((char)c); 
+ } 
+ in.close(); 
+ } catch (IOException e) { 
+ e.printStackTrace(); 
+ } 
+ } 
+} 
+----------------------------------ML-------------------
+import numpy as np  
+import matplotlib.pyplot as plt  
+import pandas as pd  
+  
+data_set= pd.read_csv('Position_Salaries.csv')  
+  
+x= data_set.iloc[:, 1:2].values  
+y= data_set.iloc[:, 2].values 
+
+from sklearn.model_selection import train_test_split  
+x_train, x_test, y_train, y_test= train_test_split(x, y, test_size= 0.2, random_state=0)  
+
+
+from sklearn.tree import DecisionTreeRegressor
+regressor = DecisionTreeRegressor(random_state=0)
+regressor.fit(x_train, y_train)
+
+pred = regressor.predict(x_test)
+print('Pred x-test',pred)
+from sklearn import metrics
+
+r_square = metrics.r2_score(y_test,pred)
+
+print('Accuracy::',r_square)
+
+new_price_pred = regressor.predict([[6.5]])
+print('The Salary of Level 6.5 is  is :: ',new_price_pred)
+
+
+X_grid = np.arange(min(x_train), max(x_train),0.01)
+print(len(X_grid))
+
+
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(x_train, y_train, color = 'red')
+plt.plot(X_grid, regressor.predict(X_grid), color = 'blue')
+
+plt.title('Decision Tree Regression')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+
+from sklearn.tree import export_graphviz
+
+export_graphviz(regressor,out_file='DTree.dot',feature_names =['Level'])
