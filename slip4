@@ -1,0 +1,249 @@
+//SADP-Pizza
+
+import java.util.ArrayList;
+
+class chicagoPizzaStore extends pizzaStore
+{
+    Pizza createPizza(String item)
+    {
+        if(item.equals("cheese"))
+        {
+            return new ChicagoStyleCheesePizza();
+        }
+        else return null;
+    }
+}
+
+class  chicagoStyleCheesePizza extends pizza
+{
+    public  chicagoStyleCheesePizza()
+    {
+        name= "Chicago Style Deep Dish CheesePizza";
+        dough="Extra thik crust dough";
+        sauce="Tomato Sauce";
+        topping.add("dhredded Mazzarela Cheese");
+    }
+    void cut()
+    {
+        System.out.println("Cutting the pizza into sqaure slices");
+    }
+}
+
+
+class Dependent pizzaStore
+{
+    public Pizza createPizza(String style, String type)
+    {
+        if(style.equls("NY"))
+        {
+            if(type.equals("Cheese"))
+            {
+                pizza=new NyStyleCheesepizza();
+            }
+        }
+        
+        if(style.equls("chicago"))
+        {
+            if(type.equals("Cheese"))
+            {
+                pizza=new chicagoStyleCheesePizza();
+            }
+        }
+        else
+        {
+            System.out.println("Error:Invalid type of pizza");
+            return null;
+        }
+        pizza.prepare();
+        pizza.bake();
+        pizza.cut();
+        pizza.box();
+        return pizza;
+    }
+}
+        
+    class NyPizzaStore extends pizzaStore
+{
+    Pizza createPizza(String item)
+    {
+        if(item.equals("cheese"))
+        {
+            return new NyStyleCheesePizza();
+        }
+        else return null;
+    }
+}
+
+class  NyStyleCheesePizza extends pizza
+{
+    public  NyStyleCheesePizza()
+    {
+        name= "Ny Style Deep Dish CheesePizza";
+        dough="Extra thik crust dough";
+        sauce="Tomato Sauce";
+        topping.add("dhredded Mazzarela Cheese");
+    }
+    void cut()
+    {
+        System.out.println("Cutting the pizza into sqaure slices");
+    }
+}
+
+
+abstract class pizza
+{
+    String name;
+    String dough;
+    String sauce;
+    ArrayList toppings=new ArrayList();
+    
+    void prepare()
+    {
+        System.out.println("preparing" + name);
+        System.out.println("tossing dough...");
+        System.out.println("Adding sauce...");
+        System.out.println("Adding toppings:");
+        
+        for(int i=0; i<topping.size();i++)
+        {
+            System.out.println(" "+topping.get(i));
+        }
+    }
+    
+    void bake()
+    {
+        System.out.println("bake for 25 minutes at 350");
+    }
+    
+    void cut()
+    {
+        System.out.println("Cutting pizza into diagonal size");
+    }
+    
+    void box()
+    {
+        System.out.println("place pizza in official store box");
+    }
+    
+    
+    public String getName()
+    {
+        return name;
+    }
+    
+    
+    public String toString()
+    {
+        String Bufferdisplay=new StringBuffer();
+        display.append("...."+ name +"...\n");
+        display.append("dough"+ "\n");
+        display.append("sauce"+"\n");
+        
+        for(int i;i<topping.size;i++)
+        {
+            display.append((String) toppings.get(i)+"\n");
+        }
+        return display.toString();
+    }
+}
+    
+    abstract class pizzaStore
+    {
+         abstract Pizza createPizza(String item);
+         public Pizza orderPizza(string type)
+         {
+             Pizza pizza = createPizza(type);
+             System.out.println("... Making a"+ Pizza.getName()+"...");
+              pizza.prepare();
+              pizza.bake();
+              pizza.cut();
+              pizza.box();
+              return pizza;
+    }
+}
+        
+        public class Main 
+        {
+        public static void main (String[] args)
+        {
+            pizzaStore nyStore=new NyPizzaStore();
+            pizzaStore chicagoStore=new chicagoPizzaStore();
+            
+            Pizza pizza=nyStore.orderPizza("cheese");
+            
+            System.out.println("Punam ordered a"+ pizza.getName()+"\n");
+            pizza=chicagoStore.orderPizza("Cheese");
+            
+            
+            System.out.println("Rutuja ordered a"+ pizza.getName()+"\n");
+            pizza=NyStore.orderPizza("Cheese");
+        }
+        }
+
+//ML
+# Implement Linear Regression for Predicting House Prices 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+ds=pd.read_csv('dataLR.csv')
+print(ds)
+
+x=ds.iloc[:,:-1].values
+y=ds.iloc[:,1:].values
+print(x)
+print('\n',y)
+
+from sklearn.model_selection import train_test_split
+x_train,y_train,x_test,y_test=train_test_split(x,y,test_size=0.5,random_state=0)
+print(x_train)
+print(len(x_train))
+print(x_test)
+print(len(x_test))
+print(y_train)
+print(len(y_train))
+print(y_test)
+print(len(x_test))
+
+from sklearn.linear_model import LinearRegression  
+regressor= LinearRegression()  
+regressor.fit(x_train,y_train)  
+
+x_pred=regressor.predict(x_train)
+y_pred=regressor.predict(x_test)
+
+plt.scatter(x_train,y_train,c='blue')
+plt.plot(x_train,x_pred,c='orange')
+plt.title('House Prices')
+plt.xlabel('Area of Houses')
+plt.ylabel('prices(in Rupees)')
+plt.show()
+
+new_price=regressor.predict([[1500]])
+print('New price of house predicted is::',new_price)
+
+from sklearn.metrics import mean_squared_error
+error=mean_squared_error(y_test,y_pred)
+print('The house price of preicted and actual is::',error)
+
+ds1=pd.read_csv('prdata.csv')
+print(ds1)
+regressor.predict(ds1)
+p=regressor.predict(ds1)
+ds1['prices']=p
+ds1.to_csv('NewPredicted.csv')
+print(ds1)
+
+//WEB Fremwork-Node.js file convert the o/p "hello world" into Uppercase.
+
+var http=require('http');
+var uc=require('upper-case');
+http.createServer(function(req,res)
+{
+  res.writeHead(200,
+{
+ 'content-Type':text/html'
+});
+  res.write(uc.uppercase("Hello world!"));
+  res.end();
+}).listen(8080);
