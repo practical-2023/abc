@@ -1,0 +1,112 @@
+Write a Java Program to implement Singleton pattern for multithreading. 
+public class Main { 
+ public static void main(String ar[]) { 
+ Test1 t = new Test1(); 
+ Test1 t2 = new Test1(); 
+ Test1 t3 = new Test1(); 
+ Thread tt = new Thread(t); 
+ Thread tt2 = new Thread(t2); 
+ Thread tt3 = new Thread(t3); 
+ Thread tt4 = new Thread(t); 
+ Thread tt5 = new Thread(t); 
+ tt.start(); 
+ tt2.start(); 
+ tt3.start(); 
+ tt4.start(); 
+ tt5.start(); 
+ } 
+} 
+final class Test1 implements Runnable { 
+ @Override 
+ public void run() { 
+ for (int i = 0; i < 5; i++) { 
+ System.out.println(Thread.currentThread().getName() + " : " + 
+Single.getInstance().hashCode()); 
+ } 
+ } 
+} 
+ 
+class Single { 
+ private final static Single sing = new Single(); 
+ private Single() { 
+ } 
+ public static Single getInstance() { 
+ return sing; 
+ } 
+ } 
+
+---------------------------------Simple linear regression
+# Implement Linear Regression for Predicting House Prices 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+ds=pd.read_csv('dataLR.csv')
+print(ds)
+
+x=ds.iloc[:,:-1].values
+y=ds.iloc[:,1:].values
+print(x)
+print('\n',y)
+
+from sklearn.model_selection import train_test_split
+x_train,y_train,x_test,y_test=train_test_split(x,y,test_size=0.5,random_state=0)
+print(x_train)
+print(len(x_train))
+print(x_test)
+print(len(x_test))
+print(y_train)
+print(len(y_train))
+print(y_test)
+print(len(x_test))
+
+from sklearn.linear_model import LinearRegression  
+regressor= LinearRegression()  
+regressor.fit(x_train,y_train)  
+
+x_pred=regressor.predict(x_train)
+y_pred=regressor.predict(x_test)
+
+plt.scatter(x_train,y_train,c='blue')
+plt.plot(x_train,x_pred,c='orange')
+plt.title('House Prices')
+plt.xlabel('Area of Houses')
+plt.ylabel('prices(in Rupees)')
+plt.show()
+
+new_price=regressor.predict([[1500]])
+print('New price of house predicted is::',new_price)
+
+from sklearn.metrics import mean_squared_error
+error=mean_squared_error(y_test,y_pred)
+print('The house price of preicted and actual is::',error)
+
+ds1=pd.read_csv('prdata.csv')
+print(ds1)
+regressor.predict(ds1)
+p=regressor.predict(ds1)
+ds1['prices']=p
+ds1.to_csv('NewPredicted.csv')
+print(ds1)
+
+Web Framework
+Webserver.js
+
+var mysql= require('mysql'); var
+con= mysql.createConnection({
+host:"localhost".
+user:"root",
+password:"satara@123",
+database: "mydb"
+});
+con.connect(function(err) {
+if (err) throw err;
+con.query("select name, address
+from
+Customer", function(err, result, fields) {
+if (err) throw err;
+console.log(result); 
+}); 
+}); 
+var sql = "DELETE FROM Customer WHERE address='Valley 345"; con.query(sql, function(err, result) { if (err) throw err; console.log("Number of records Deleted:" + result. affectedRows);
+});
